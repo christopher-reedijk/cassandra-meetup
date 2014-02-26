@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>C*@ING: 3 challenges, 3 facts, 3 questions</title>
+
+		<meta name="description" content="A presentation to share our journey with C*@ING along with 3 myths, 3 facts and 3 questions about it">
+		<meta name="author" content="Christopher Reedijk | Gary Stewart">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+		
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		<style type="text/css">
+        .ING {
+        	color: #ff6600;
+        }
+    </style>
+    <link rel="shortcut icon" href="./images/ing_nl_favicon.ico">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">				
+				<section>
+					<h1><scan class="ING">C*@ING</scan></h1>					
+					<h3>3 challenges, 3 facts, 3 questions</h3>
+					<p>
+						<small>Created by Christopher Reedijk (<a href="http://twitter.com/creedijk"><span class="ING">@creedijk</span></a>) and Gary Stewart (<a href="http://twitter.com/Gaz_GandA"><span class="ING">@Gaz_GandA</span></a>)<br>Dev Engineers, ING Netherlands</small><br>
+						<br><img width=10% src="./images/ing_nl.jpg" alt="ING">
+						<br><small>ING Nederland (<a href="http://twitter.com/@ingnl"><span class="ING">@ingnl</span></a>)</small>
+					</p>
+				</section>
+				
+				<section>
+					<p><span class="ING">Short introduction</span></p>
+					<table class="stretch">
+						<tr>
+							<td width=50%><img width="320" height="320" src="./images/chris.jpg" alt="Chris"></td>
+							<td width=50%><img width="320" height="320" src="./images/gary.jpg" alt="Gary"></td>
+						</tr>
+						<tr>
+							<td width=50%>Christopher Reedijk</td>
+							<td width=50%>Gary Stewart</td>
+						</tr>
+						<tr>
+							<td width=50%>
+								<ul>
+									<li class="ING">Dev Engineer</li>
+									<li class="ING">C* enthousiast</li>
+									<li class="ING">@ING since: 01-01-2011</li>
+									<li class="ING">aka Grumpy</li>
+								</ul>
+							</td>
+							<td width=50%>
+								<ul>
+									<li class="ING">Dev Engineer</li>
+									<li class="ING">Love/hate relationship with C* :)</li>
+									<li class="ING">@ING since: 01-01-2012</li>
+									<li class="ING">aka Legacy</li>
+								</ul>
+							</td>
+						</tr>
+					</table> 					
+				</section>
+
+				<section>
+					<section>
+					<p><span class="ING">challenge 1</span></p><h2>Improve <span class="ING">availability</span></h2><h2 class="fragment"> without trading <span class="ING">consistency</span></h2>
+					</section>
+					<section>
+						<em><span class="ING">availability & consistency</span></em><br><br>
+						<h2>Consequences of not being <span class="ING">available</span></h2>
+						<img src="./images/challenge1_ING_outage.jpg" alt="ING outage">
+						<img src="./images/challenge1_ING_outage_1.jpg" alt="ING outage">
+						<br><img src="./images/challenge1_ING_outage_2.jpg" alt="ING outage">
+						<br><small>source: <a href="http://www.nu.nl"><span class="ING">nu.nl</span></a></small>
+					</section>	
+					<section>
+						<em><span class="ING">availability & consistency</span></em><br><br>
+						<h2>Consequences of not being <span class="ING">consistent</span></h2>
+						<img src="./images/InsufficientFunds.jpg" alt="Insuffiecient funds">
+					</section>
+				</section>
+				<section>
+					<section>
+						<p><span class="ING">challenge 2</span></p><h2>Aim to be <span class="ING">easier</span> scalable<br></h2><h2 class="fragment">Changes are happening at an <span class="ING">increasing</span> pace</h2>
+					</section>			
+					<section>
+						<em><span class="ING">easier scalable</span></em><br><br>
+						<h2>Stop focusing on the<br><span class="ING">expected</span> load</h2>
+						<img width=50% src="./images/web-yester.png" alt="Web yesterday">
+						<br><small>yesterday</small>
+						<br><br><small>source: <a href="http://bradfrostweb.com/blog/web/responsive-web-design-missing-the-point/"><span class="ING">bradfrostweb.com</span></a></small>
+					</section>		
+					<section>
+						<em><span class="ING">easier scalable</span></em><br><br>
+						<h2>Start focusing on the<br><span class="ING">unexpected</span> load</h2>
+						<img width=45% src="./images/web-now.png" alt="Web now"></td>
+						<img width=45% src="./images/web-tomorrow.png" alt="Web tomorrow">
+						<br><table class="stretch">
+							<tr>
+								<td height=10% width=50% style="text-align: center;"><small>today</small></td>
+								<td height=10% width=50% style="text-align: center;"><small>tomorrow</small></td>
+							</tr>
+							<tr>
+								<td colspan=2 style="text-align: center;"><small>source: <a href="http://bradfrostweb.com/blog/web/responsive-web-design-missing-the-point/"><span class="ING">bradfrostweb.com</span></a></small></td>
+							</tr>
+						</table> 
+					</section>
+				</section>			
+				<section>
+					<section>
+						<p><span class="ING">challenge 3</span></p><h2>Adopt <span class="ING">new</span> ways of thinking<br></h2><h2 class="fragment">Become the top <span class="ING">engineering</span> company</h2>		
+					</section>
+					<section>
+						<em><span class="ING">new way of thinking</span></em><br><br>
+						<h2>ING's <span class="ING">culture</span> is changing fast.<br>Waterfall to Scrum to DevOps in less than <span class="ING">2 years</span></h2>
+					</section>	
+					<section data-transition="none">
+						<em><span class="ING">new way of thinking</span></em><br><br>
+						<iframe class="stretch" src="http://www.youtube.com/embed/OcRC0DFH1Bo" frameborder="0" allowfullscreen></iframe>
+					</section>
+					<section>
+						<em><span class="ING">new way of thinking</span></em><br><br>
+						<h2><span class="ING">Pre-conceived</span> ideas still need to be cleared</h2> 
+						<p><span class="fragment"><span class="ING">Cache</span> is bad, when used <span class="ING">incorrectly</span></span></p>
+						<p class="fragment">Need for <span class="ING">locking</span> (transaction) everywhere</p>
+						<p class="fragment">Every <span class="ING">domain</span> for themselves</p>
+					</section>	
+				</section>
+				<section>
+					<em><span class="ING">all challenges appear...</span></em><br><br>
+					<p class="fragment">Improve <span class="ING">availability</span></p>
+					<p class="fragment">Aim to be <span class="ING">scalable</span></p>
+					<p class="fragment">Adopt <span class="ING">new</span> ways of thinking</p>
+				</section>
+				
+				<section>
+					<h2><span class="ING">C*</span> to save the day</h2>
+					<img width=45% src="./images/superman-rescue.jpg" alt="Superman">	
+				</section>
+				<section>
+					<section>
+						<p><span class="ING">fact 1</span></p><h2><span class="ING">Availability</span> is easier</h2>		
+					</section>
+					<section>
+						<p><span class="ING">Proof</span></p>
+						<img src="./images/resilience_results.jpg" alt="Availability result">	
+					</section>
+					<section>
+						<em><span class="ING">availability is easier, because</span></em><br><br>
+						<h2><span class="ING">Masterless</span> architecture</h2>
+						<p><span class="ING">No outages</span> in contrast to master-slave architecture</p>
+						<p>This does make C* <span class="ING">chatty</span></p>
+					</section>
+					<section>
+						<em><span class="ING">availability is easier, because</span></em><br><br>
+						<h2><span class="ING">Replication</span> of data</h2>
+						<p>Replication factor is <span class="ING">configurable</span> per keyspace</p>
+						<p>Increasing nodes <span class="ING">does not</span> mean higher availability<br>Increasing the replication factor <span class="ING">does</span></p>
+					</section>
+				</section>
+				<section>
+					<section>
+						<p><span class="ING">fact 2</span></p><h2><span class="ING">Performance</span> is easier</h2>				
+					</section>
+					<section>
+						<p><span class="ING">Proof</span></p>
+						<img src="./images/performance_results.jpg" alt="Performance result">	
+					</section>
+					<section>
+						<em><span class="ING">performance is easier, and</span></em><br><br>
+						<h2>Solve your <span class="ING">reads</span> with your <span class="ING">writes</span></h2>
+						<p><span class="ING">De-normalization</span> is acceptable for solving reads</p>
+					</section>
+					<section>
+						<em><span class="ING">performance is easier, but</span></em><br><br>
+						<h2>Know your <span class="ING">partitions</span></h2>
+						<p><span class="ING">Large</span> partitions will hurt!</p>
+						<img src="./images/partitioning_table.jpg" alt="Partitioning"> 
+					</section>
+					<section>
+						<em><span class="ING">performance is easier, because</span></em><br><br>
+						<h2><span class="ING">Linear</span> scalable</h2>
+						<p>Adding nodes will increase your throughput through <span class="ING">sharding</span></p> 
+						<img width=50% src="./images/linear_scalable.jpg" alt="Linear scalability">
+						<br><br><small>source: <a href="http://www.datastax.com/wp-content/uploads/2013/02/WP-Benchmarking-Top-NoSQL-Databases.pdf"><span class="ING">Datastax</span></a></small>
+					</section>
+				</section>			
+				<section>
+					<section>
+						<p><span class="ING">fact 3</span></p><h2><span class="ING">Consistency</span> is harder</h2>
+					</section>
+					<section>
+						<em><span class="ING">consistency is harder, and</span></em><br><br>
+						<h2>Application <span class="ING">developer</span> has much more responsibility</h2>		
+						<p>Focus on the <span class="ING">data model</span> and the <span class="ING">flow</span> of data is key</p>
+						<p><span class="ING">noSQL</span> versus <span class="ING">SQL</span></p>
+					</section>
+					<section>
+						<em><span class="ING">consistency is harder, because</span></em><br><br>
+						<h2>CAP theorem</h2>
+						<p><span class="ING">Consistency</span>(all nodes see the same data at the same time)</p>
+						<p><span class="ING">Availability</span>(a guarantee that every request receives a response about whether it was successful or failed)</p>
+						<p><span class="ING">Partition tolerance</span>(the system continues to operate despite arbitrary message loss or failure of part of the system)</p>
+					</section>	
+					<section>
+						<em><span class="ING">consistency is harder, because</span></em><br><br>
+						<h2>Transactions and queuing are <span class="ING">anti-patterns</span></h2>		
+						<p>C* v2.0 <span class="ING">reduces</span> the complexity by using paxos</p>
+					</section>
+				</section>
+				<section>
+					<em><span class="ING">all facts appear...</span></em><br><br>
+					<p class="fragment"><span class="ING">Availability</span> is easier<span class="fragment"> | <span class="ING">challenge 1: </span> availability & consistency</span></p>
+					<p class="fragment"><span class="ING">Performance</span> is easier<span class="fragment"> | <span class="ING">challenge 2</span> easier scalable</span></p>
+					<p class="fragment"><span class="ING">Consistency</span> is harder<span class="fragment"> | <span class="ING">challenge *</span> availability & consistency, easier scalable, new way of thinking</span></p>
+					<br><em class="fragment"><span class="ING">all challenges covered...</span></em>
+				</section>
+					
+				<section>
+					<section>
+						<p><span class="ING">question 1</span></p><h2>What <span class="ING">risks</span> do we have with<br><span class="ING">2 DC's</span> and using Write/Read CL of <span class="ING">LOCAL_QUORUM</span>?</h2>				
+						<img src="./images/question1.jpg" alt="Question 1">
+					</section>
+					<section>
+						<h2><span class="ING">Split-brain</span></h2>
+						<img src="./images/split_brain.jpg" alt="Split brain">
+						<p>Who wins? <span class="ING">Neither</span> side knows the other side!</p>	 
+					</section>	
+					<section>
+						<h2>CAP theorem - <span class="ING">choose</span> wisely</h2>
+						<p class="fragment">Use QUORUM but <span class="ING">risk availability</span><br>when there are issues with the WAN link</p>
+						<p class="fragment">Arrange a third DC... <span class="ING">&euro;&euro;&euro;</span></p>
+						<p class="fragment">Applications apply DC stickiness<br>whilst processing data which <span class="ING">increases complexity</span></p>
+					</section>	
+				</section>	
+				<section>
+					<section>
+						<p><span class="ING">question 2</span></p><h2>Does QUORUM read and QUORUM write <span class="ING">guarantee</span> consistency?</h2>				
+					</section>
+					<section>
+						<h2><span class="ING">No</span> - it gives strong consistency</h2> 
+						<p class="fragment"><span class="ING">NTP</span> must be set-up correctly
+						<br>Know your <span class="ING">flow</span> of data
+						<br>Model as <span class="ING">idem-potent-ly</span> as possible
+						<br><img src="./images/timesync_issue.jpg" alt="NTP issue"></p>
+					</section>	
+				</section>	
+				<section>
+					<section>
+						<p><span class="ING">question 3</span></p><h2>Will C* solve <span class="ING">all</span> your IT issues?</h2>				
+					</section>
+					<section>
+						<h2><span class="ING">No</span> - but it will help solve a lot of your problems</h2>
+						<p class="fragment">Performance and availability are <span class="ING">tuneable</span> based on needs and costs</p>
+						<p class="fragment">Consistency is solved by <span class="ING">design</span> and knowing the <span class="ING">flow</span> of data</p>
+						<p class="fragment">Going from SQL to noSQL is a <span class="ING">paradigm</span> shift</p>
+						<p class="fragment"><span class="ING">Skills</span> are not readily available</p>
+						<p class="fragment">Some issues are better solved by <span class="ING">relational</span> databases</p>
+					</section>
+				</section>
+													
+				<section>
+					<p>Thank you</p>
+					<em>...graceful bow</em>
+					<br><br><br>
+					Contact<br>	
+					<a href="mailto:christopher.reedijk@ing.nl"><span class="ING">christopher.reedijk@ing.nl</span></a><br>
+					<a href="mailto:gary.stewart@ing.nl"><span class="ING">gary.stewart@ing.nl</span></a><br><br>
+					<em>We're hiring!</em><br>
+					<img src="./images/ing-logo.gif" alt="ING">
+					<br><br><br><br><small>this presentation is created using: <a href="https://github.com/hakimel/reveal.js/"><br><span class="ING">reveal.js</span></a></small>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Let's kick-off the<br><span class="ING">open discussion</span></h2>
+					</section>
+				</section>
+			</div>					
+		</div>
+		<script src="lib/js/head.min.js"></script>
+          <script src="js/reveal.min.js"></script>
+		<script>
+				// Full list of configuration options available here:
+				// https://github.com/hakimel/reveal.js#configuration
+				Reveal.initialize({
+						controls: true,
+						progress: true,
+						history: true,
+						center: true,
+
+						theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+						transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+						// Parallax scrolling
+						// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+						// parallaxBackgroundSize: '2100px 900px',
+
+						// Optional libraries used to extend on reveal.js
+						dependencies: [
+								{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+								{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+								{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+								{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+								{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+								{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+						]
+				});
+		</script>
+	</body>
+</html>
