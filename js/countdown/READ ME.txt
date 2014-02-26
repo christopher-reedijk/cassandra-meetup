@@ -1,8 +1,9 @@
 ////////////////////////////////////////////
 //                                        //
 //                Countdown               //
-//                   v3.3                 //
-//              Feb. 25, 2014             //    
+//                   v3.1                 //
+//              Feb. 19, 2014             //    
+//              by mike gieson            //
 //              www.gieson.com            //
 //           Copyright Mike Gieson        //
 //                                        //
@@ -57,7 +58,6 @@ var myCD2 = new Countdown({
 	// Optional settings
 	// ---------------------------------------------------------
 	hideLabels	: false,		// Set to true to prevent the "DAYS HOURS MINUTES" labels below the number altogether
-	hideLine	: false,		// When true, hides the black line in the middle of the numbers. (Doesn't affect the "flip" stlye)
 	width		: 200,			// Defaults to 200 x 30 pixels, you can specify a custom size here
 	height		: 30,			// 
 	inline		: true,			// If inline, text will wrapp around object, otherwise this countdown object will consume the entire "line"
