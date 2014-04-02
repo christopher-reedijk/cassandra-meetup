@@ -22,7 +22,13 @@
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
-			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
 		</script>
 
 		<!--[if lt IE 9]>
@@ -89,45 +95,38 @@
 
 				<section>
 					<section>
-						<em><span class="ING">Quick recap: Our challenges - previous meetup</span></em><br><br>
+						<em><span class="ING">quick recap: our challenges - previous meetup</span></em><br><br>
 						<h2 class="fragment">Improve <span class="ING">availability</span><br>without trading <span class="ING">consistency</span></h2>
 						<h2 class="fragment">Aim to be <span class="ING">easier</span> scalable<br></h2>
 						<h2 class="fragment" >Adopt <span class="ING">new</span> ways of thinking<br></h2>
+						<br><small><a href="./cassandra-ing-meetup-20140226.html" target="_blank"><span class="ING">presentation</a></span></small>
 					</section>
 					<section>
-						<em><span class="ING">Quick recap: About C* - previous meetup</span></em><br><br>
+						<em><span class="ING">quick recap: about C* - previous meetup</span></em><br><br>
 						<h2 class="fragment"><span class="ING">Availability</span> is easier</h2>		
 						<h2 class="fragment"><span class="ING">Performance</span> is easier</h2>
 						<h2 class="fragment"><span class="ING">Consistency</span> is harder</h2>
+						<br><small><a href="./cassandra-ing-meetup-20140226.html" target="_blank"><span class="ING">presentation</a></span></small>
 					</section>
 				</section> 	
 
 				<section>
 					<section>
-						<em><span class="ING">And now for tonight?</span></em><br><br>
+						<em><span class="ING">and now for tonight?</span></em><br><br>
 						<h2 >Lets talk about <span class="ING">consistency</span></h2>
 						<h2 >as it is supposed to be <span class="ING">harder!</span></h2>
 					</section>
 					<section>
-						<em><span class="ING">A generic problem</span></em><br><br>
+						<em><span class="ING">a generic problem</span></em><br><br>
 						<img width=50% src="./images/Batch_Flow.JPG" alt="Flow">	
-						<table width=100%>
-							<tr>
-								<td width=100% style="vertical-align:middle">
-									<p><span class="ING"></span></p>
-									<ul>
-										<li>Split batch files into single units of work</li>
-										<li>Also process single unit of work</li>
-										<li>Merge into a single batch file for processing</li>
-										<li>Batches can be scheduled and processed before certain times</li>
-										<li>Single unit of work MUST be processed ONCE only <br>NOT at least 1 and NOT at the most 1!</li>
-									</ul>
-								</td>
-							</tr>
-						</table>	
+						<p>Split <span class="ING">batch files</span> into <span class="ING">single units of work</span></p>
+						<p><span class="ING">Also</span> process single unit of work</p>
+						<p><span class="ING">Merge</span> into a <span class="ING">single</span> batch file for processing</p>
+						<p>Batches can be <span class="ING">scheduled</span> and processed before certain times</p>
+						<p>Single unit of work <span class="ING">MUST</span> be processed ONCE only <br<span class="ING">>NOT</span> at least 1 and <span class="ING">NOT</span> at the most 1!</p>
 					</section>
 					<section>
-						<em><span class="ING">and this is how it looks...</span></em><br><br>
+						<em><span class="ING">and this is how it looks like...</span></em><br><br>
 						<img width=40% src="./images/Flow.JPG" alt="Flow">	
 						<p><span class="ING">Easy</span> - Split batches into single units</p>
 						<p><span class="ING">Hard</span> - Single units collected into a batch file</p>
@@ -138,7 +137,7 @@
 						<img width=30% src="./images/stress.png">		
 					</section>
 					<section>
-						<em><span class="ING">Typical solution - Transactional database</span></em><br><br>
+						<em><span class="ING">typical solution - transactional database</span></em><br><br>
 						<h2 >e.g. Oracle, Postgres</h2>
 						<p><span class="ING">1 Query</p>
 <pre>
@@ -151,11 +150,11 @@
                 NO WAIT 
 </pre>
 						<p><span class="ING">DONE</span> - thank you for your time...</p><br>
-						<p class="fragment">Hang on - what about <span class="ING">scalability</span>, <span class="ING">resilience</span> and <span class="ING">availability</span>?</p>
-						<p class="fragment">Will <span class="ING">infra</span> solve that? <span class="ING">Too easy</span> :-)</p>
+						<p>Hang on - what about <span class="ING">scalability</span>, <span class="ING">resilience</span> and <span class="ING">availability</span>?</p>
+						<p>Will <span class="ING">infra</span> solve that? <span class="ING">Too easy</span> :-)</p>
 					</section>
 					<section>
-						<em><span class="ING">So could this be solved in C*?</span></em><br><br>
+						<em><span class="ING">so could this be solved in C*?</span></em><br><br>
 <pre>
                 SELECT .... FOR UPDATE 
                    FROM .... a
@@ -169,7 +168,7 @@
 						<p><span class="ING">"WHERE"</span> Filtering on status and timestamps = tricky<br>e.g. could use <span class="ING">clustering columns</span></p>
 						<p>Table scan over partitions - C* = <span class="ING">slow(er)</span></p>
 						<p><span class="ING">Large partitions</span> can be <span class="ING">cumbersome</span></p><br>
-						<p class="fragment"><span class="ING">Not</span> looking good for C* :-(</p>
+						<p><span class="ING">Not</span> looking good for C* :-(</p>
 					</section>
 					<section>
 						<h2><span class="ING">Sucker</span> for pain<br>let's try this in C* anyway</h2>	<br>
@@ -187,7 +186,7 @@
 								<td width=20%>
 									<img width=100% src="./images/passengers.jpg">
 								</td>
-								<td width=60%  style="vertical-align:middle">
+								<td width=60% style="vertical-align:middle">
 									<div align="center">
 										<p>we will call out-going files - <span class="ING">trains</span></p>
 										<p>And single units of work - <span class="ING">passengers</span></p>
@@ -198,6 +197,13 @@
 								</td>
 							</tr>
 						</table>
+					</section>
+					<section>
+						<em><span class="ING">proposed solutions</span></em><br><br>
+						<p>No Lock</p>
+						<p>Counter</p>
+						<p>Paxos</p>
+						<p>Carriages</p>
 					</section>
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
@@ -236,28 +242,28 @@
             );                                  );
 </pre><br>
 						<p><span class="ING">No</span> client-side read-before-write</p>
-						<p><span class="ING">Separate table</span> - not allowed in batches<br>with other statements</p><br>
+						<p><span class="ING">Separate table</span> - counters not allowed in batches<br>with other statements</p><br>
 						<em><span class="ING">Is this consistent?</span></em><br>
 						<p><span class="ING">Document says</span> - Counters are made for this<br>but <span class="ING">overcounts</span> are possible</p>
 						<p><span class="ING">Expected results:</span> TrainCounter and TrainPassenger are in-sync</p>
 					</section>
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
-						<h2><span class="ING">PAXOS</span> - lightweight tranaction in C* (since v2)</h2>
+						<h2><span class="ING">PAXOS</span> - lightweight transactions in C* (since v2)</h2>
 <pre>
-        SELECT TrainTotal FROM TrainTotal WHERE trainid = ?
-        UPDATE TrainTotal SET TrainTotal = ? WHERE trainid = ? IF TrainTotal= ?;
-        if [applied] == true  then INSERT INTO TrainPassenger (TrainId, PassengerId) 
+        SELECT CarriageTotal FROM CarriageTotal WHERE Carriageid = ?
+        UPDATE CarriageTotal SET CarriageTotal = ? WHERE Carriageid = ? IF CarriageTotal= ?;
+        if [applied] == true  then INSERT INTO CarriagePassenger (CarriageId, PassengerId) 
         VALUES (?,?);
 
-        CREATE TABLE TrainTotal (           CREATE TABLE TrainPassenger (
-        TrainId       text,                 TrainId       text,  
-        TrainTotal    int,                  PassengerId   text,
-        PRIMARY KEY ( TrainId )             PRIMARY KEY ( TrainId,  PassengerId) 
-        );                                  );
+        CREATE TABLE CarriageTotal (           CREATE TABLE CarriagePassenger (
+        CarriageId       text,                 CarriageId       text,  
+        CarriageTotal    int,                  PassengerId   text,
+        PRIMARY KEY ( CarriageId )             PRIMARY KEY ( CarriageId,  PassengerId) 
+        );                                     );
 </pre>
 						<p><span class="ING">Still</span> need a read-before-write</p>
-						<p>Even though the document says use for 1% of your application<br>- <span class="ING">use wisely</span> - costs are high</p>
+						<p>Even though the document says use for 1% of your application -<br><span class="ING">use wisely</span> - costs are high</p>
 						<p><span class="ING">Lightweight</span> in features <span class="ING">BUT</span> not in 'execution'<p>
 						<p>We don't need <span class="ING">100.000</span> tps so this should be fine - <span class="ING">possible</span> solution!<p>
 						<p><span class="ING">Expected results:</span> Consistent but slower</p>
@@ -267,15 +273,15 @@
 						<h2><span class="ING">CARRIAGES</span> - lets break the problem into chunks</h2>
 <pre>
             BEGIN BATCH
-              INSERT INTO TrainPassenger (TrainId, PassengerId) VALUES (?,?);
-              UPDATE TrainTotal SET TrainTotal = ? WHERE TrainId = ?;
+              INSERT INTO CarriagePassenger (CarriageId, PassengerId) VALUES (?,?);
+              UPDATE CarriageTotal SET CarriageTotal = ? WHERE CarriageId = ?;
             APPLY BATCH
 
-            CREATE TABLE TrainTotal (           CREATE TABLE TrainPassenger (
-            TrainId       text,                 TrainId       text,  
-            TrainTotal    int,                  PassengerId   text,
-            PRIMARY KEY ( TrainId )             PRIMARY KEY ( TrainId,  PassengerId) 
-            );                                  );
+            CREATE TABLE CarriageTotal (           CREATE TABLE CarriagePassenger (
+            CarriageId       text,                 CarriageId       text,  
+            CarriageTotal    int,                  PassengerId   text,
+            PRIMARY KEY ( CarriageId )             PRIMARY KEY ( CarriageId,  PassengerId) 
+            );                                     );
 </pre><br>
 						<em><span class="ING">Trains and carriages</span></em><br>
 						<p><span class="ING">Each</span> application is responsible for their <span class="ING">own</span> carriage</p>
@@ -286,22 +292,61 @@
 					</section>
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
-						<h2>So now we have <span class="ING">options</span> -<br>let's <span class="ING">test</span> them out</h2>
-						<p>No Lock</p>
-						<p>Counter</p>
-						<p>Paxos</p>
-						<p>Carriages</p>
+						<h2>So now we have <span class="ING">options</span> -<br>let's <span class="ING">test</span> them out</h2><br>
+						<table width=100%>
+							<tr>
+								<td width=15%>&nbsp;</td>
+								<td style="vertical-align:middle">
+									<p>No Lock</p>
+								</td>
+								<td style="vertical-align:middle">
+									<small><span class="ING">Expected results:</span> TrainTotal and TrainPassenger out-of-sync</small>
+								</td>
+							</tr>
+							<tr>
+								<td width=15%>&nbsp;</td>
+								<td style="vertical-align:middle">
+									<p>Counter</p>
+								</td>
+								<td style="vertical-align:middle">
+									<small><span class="ING">Expected results:</span> TrainCounter and TrainPassenger are in-sync</small>
+								</td>
+							</tr>
+							<tr>
+								<td width=15%>&nbsp;</td>
+								<td style="vertical-align:middle">
+									<p>Paxos</p>
+								</td>
+								<td style="vertical-align:middle">
+									<small><span class="ING">Expected results:</span> Consistent but slower</small>
+								</td>
+							</tr>
+							<tr>
+								<td width=15%>&nbsp;</td>
+								<td style="vertical-align:middle">
+									<p>Carriages<p>
+								</td>
+								<td style="vertical-align:middle">
+									<small><span class="ING">Expected results:</span> Consistent and fast but requires more logic</small>
+								</td>
+							</tr>
+						</table>
 					</section>
 					<section>
-						<em><span class="ING">The setup</span></em><br><br>
+						<em><span class="ING">the setup</span></em><br><br>
 						<img width=200 height=80 src="./images/gatling.png" alt="Gatling - Results">	
-						<img width=200 height=80 src="./images/nodejs.jpg" alt="Gatling - Results">	
+						<img width=200 height=80 src="./images/nodejs.JPG" alt="Gatling - Results">	
 						<p>Datastax Community C* v2.0.6</p>
 						<p>Gatling performance tester</p>
 						<p>4 users each doing 250 runs</p>
 						<p>Call each step in a sequence</p><br>
 						<p><a href="http://expressjs.com/" target="_blank"><span class="ING">ExpressJS</span></a></p>
 						<p><a href="https://github.com/jorgebay/node-cassandra-cql" target="_blank"><span class="ING">Node-Cassandra-cql</span></a></p>
+					</section>
+					<section>
+						<em><span class="ING">test</span></em><br><br>
+						<p>Running the test...</p>
+						<img width=100% src="./images/demo.png">
 					</section>
 					<section>
 						<em><span class="ING">test</span></em><br><br>
@@ -316,10 +361,9 @@ cqlsh:meetup> select * from traintotal;          cqlsh:meetup> select * from tra
  carriage_3000 |        600
        no_lock |        930
 </pre>
-						<p>See anything interesting???</p>
 					</section>
 					<section>
-						<em><span class="ING">test</span></em><br><br>
+						<em><span class="ING">next steps</span></em><br><br>
 						<h2><span class="ING">Great,</span> so application fills up the carriage</h2>
 						<p><span class="ING">but what about the trains</span></p>
 						<img width=25% src="./images/train.jpg">
@@ -354,7 +398,6 @@ if (rows.get(0).getBool('[applied]') ) {
 CREATE TABLE ClusterLock (
 Name       text,
 LockId     text,
-Hostname   text,
 PRIMARY KEY ( Name )
 );
 </pre>
@@ -405,15 +448,15 @@ PRIMARY KEY ( Name )
 </pre>
 					</section>
 					<section>
-							<em><span class="ING">Other steps</span></em><br><br>
-							<p>Train departure - <span class="ING">requires</span> cluster lock</p>
-							<p>Depot - table of all unlinked carriages - <span class="ING">should be empty</span> helps with error situations</p>
-							<p>Scheduling - <span class="ING">based on</span> deadlines etc...</p>
-							<p>Maintenance - ensure that <span class="ING">all operations</span> are running smoothly - complete the feedback loop</p>
-							<img width=35% src="./images/trainstation.jpg">
+						<em><span class="ING">other steps</span></em><br><br>
+						<p>Train departure - <span class="ING">requires</span> cluster lock</p>
+						<p>Depot - table of all unlinked carriages - <span class="ING">should be empty</span> helps with error situations</p>
+						<p>Scheduling - <span class="ING">based on</span> deadlines etc...</p>
+						<p>Maintenance - ensure that <span class="ING">all operations</span> are running smoothly - complete the feedback loop</p>
+						<img width=40% src="./images/trainstation.jpg">
 					</section>
 					<section>
-						<em><span class="ING">To Summarize</span></em><br><br>
+						<em><span class="ING">to summarize</span></em><br><br>
 						<p><span class="ING">More responsibility</span> in the application results in more <span class="ING">scalable</span> solution</p>
 						<p><span class="ING">Reduced contention</span> in the cluster</p>
 						<img width=40% src="./images/responsibility.jpg">
@@ -425,7 +468,7 @@ PRIMARY KEY ( Name )
 						<h2><span class="ING">Is it worth it?</span></h2><br>
 						<p>Only <span class="ING">you</span> can decide</p>
 						<img width=25% src="./images/pointing-finger.jpg">
-						<p><span class="ING">Hailo</span> and <span class="ING">NetFlix</span> are deploying in new countries<br>within weeks <span class="ING">without</span> code change</p>
+						<p><span class="ING">Hailo</span> and <span class="ING">NetFlix</span> are rapidly deploying in<br>new countries within weeks</p>
 					</section>
 					<section>
 						<h2><span class="ING">One final piece of advice:</span><br>test ALL features you are using</h2><br>
