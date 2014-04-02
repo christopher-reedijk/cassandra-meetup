@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>C*@ING: Train Management</title>
+
+		<meta name="description" content="A presentation to share our journey with C*@ING">
+		<meta name="author" content="Christopher Reedijk | Gary Stewart">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+		
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		<style type="text/css">
+        .ING {
+        	color: #ff6600;
+        }
+    </style>
+    <link rel="shortcut icon" href="./images/ing_nl_favicon.ico">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">				
+				<section>
+					<h1><scan class="ING">C*@ING</scan></h1>					
+					<h3>Train Management</h3>
+					<p>
+						<small>Created by Christopher Reedijk (<a href="http://twitter.com/creedijk" target="_blank"><span class="ING">@creedijk</span></a>) and Gary Stewart (<a href="http://twitter.com/Gaz_GandA" target="_blank"><span class="ING">@Gaz_GandA</span></a>)<br>Dev Engineers, ING Netherlands</small><br>
+						<br><img width=10% src="./images/ing_nl.jpg" alt="ING">
+						<br><small>ING Nederland (<a href="http://twitter.com/@ingnl" target="_blank"><span class="ING">@ingnl</span></a>)</small>
+					</p>
+				</section>
+				
+				<section>
+					<em><span class="ING">Short introduction</span></em><br><br>
+					<table width=100%>
+						<tr>
+							<td width=45%><img width="320" height="320" src="./images/chris.jpg" alt="Chris"></td>
+							<td width=10%>&nbsp;</td>
+							<td width=45%><img width="320" height="320" src="./images/gary.jpg" alt="Gary"></td>
+						</tr>
+						<tr>
+							<td width=45%>Christopher Reedijk</td>
+							<td width=10%>&nbsp;</td>
+							<td width=45%>Gary Stewart</td>
+						</tr>
+						<tr>
+							<td width=45% syle="vertical-align:top">
+								<ul>
+									<li class="ING">Dev Engineer</li>
+									<li class="ING">C* enthousiast</li>
+									<li class="ING">@ING since: 01-01-2011</li>
+									<li class="ING">aka Grumpy</li><br>
+								</ul>
+							</td>
+							<td width=10%>&nbsp;</td>
+							<td width=45% syle="vertical-align:top">
+								<ul>
+									<li class="ING">Dev Engineer</li>
+									<li class="ING">Love/hate relationship<br>with C* :)</li>
+									<li class="ING">@ING since: 01-01-2012</li>
+									<li class="ING">aka Chaos Monkey</li>
+								</ul>
+							</td>
+						</tr>
+					</table> 					
+				</section>
+
+				<section>
+					<section>
+						<em><span class="ING">Quick recap: Our challenges - previous meetup</span></em><br><br>
+						<h2 class="fragment">Improve <span class="ING">availability</span><br>without trading <span class="ING">consistency</span></h2>
+						<h2 class="fragment">Aim to be <span class="ING">easier</span> scalable<br></h2>
+						<h2 class="fragment" >Adopt <span class="ING">new</span> ways of thinking<br></h2>
+					</section>
+					<section>
+						<em><span class="ING">Quick recap: About C* - previous meetup</span></em><br><br>
+						<h2 class="fragment"><span class="ING">Availability</span> is easier</h2>		
+						<h2 class="fragment"><span class="ING">Performance</span> is easier</h2>
+						<h2 class="fragment"><span class="ING">Consistency</span> is harder</h2>
+					</section>
+				</section> 	
+
+				<section>
+					<section>
+						<em><span class="ING">And now for tonight?</span></em><br><br>
+						<h2 >Lets talk about <span class="ING">consistency</span></h2>
+						<h2 >as it is supposed to be <span class="ING">harder!</span></h2>
+					</section>
+					<section>
+						<em><span class="ING">A generic problem</span></em><br><br>
+						<img width=50% src="./images/Batch_Flow.JPG" alt="Flow">	
+						<table width=100%>
+							<tr>
+								<td width=100% style="vertical-align:middle">
+									<p><span class="ING"></span></p>
+									<ul>
+										<li>Split batch files into single units of work</li>
+										<li>Also process single unit of work</li>
+										<li>Merge into a single batch file for processing</li>
+										<li>Batches can be scheduled and processed before certain times</li>
+										<li>Single unit of work MUST be processed ONCE only <br>NOT at least 1 and NOT at the most 1!</li>
+									</ul>
+								</td>
+							</tr>
+						</table>	
+					</section>
+					<section>
+						<em><span class="ING">and this is how it looks...</span></em><br><br>
+						<img width=40% src="./images/flow.jpg" alt="Flow">	
+						<p><span class="ING">Easy</span> - Split batches into single units</p>
+						<p><span class="ING">Hard</span> - Single units collected into a batch file</p>
+						<p>Commonly known as <span class="ING">Synchronize Issue</span></p>						
+					</section>
+					<section>
+						<h2><span class="ING">Challenging</span> in a distributed<br>world even more so when <span class="ING">masterless</span>!</h2>	
+						<img width=30% src="./images/stress.png">		
+					</section>
+					<section>
+						<em><span class="ING">Typical solution - Transactional database</span></em><br><br>
+						<h2 >e.g. Oracle, Postgres</h2>
+						<p><span class="ING">1 Query</p>
+<pre>
+                SELECT .... FOR UPDATE 
+                   FROM .... a
+                   JOIN .... b ON a.<id> = b.<id>  //optional
+                WHERE status = 'NEW'
+                   AND timestamp between ... and ...
+                   AND rownum &lt; X  
+                NO WAIT 
+</pre>
+					<p><span class="ING">DONE</span> - thank you for your time...</p>
+					<p class="fragment">Hang on - what about <span class="ING">scalability</span>, <span class="ING">resilience</span> and <span class="ING">availability</span>?</p>
+					<p class="fragment">Will <span class="ING">infra</span> solve that? <span class="ING">Too easy</span> :-)</p>
+					</section>
+
+					<section>
+						<em><span class="ING">So could this be solved in C*?</span></em><br><br>
+<pre>
+                SELECT .... FOR UPDATE 
+                   FROM .... a
+                   JOIN .... b ON a.<id> = b.<id>  //optional
+                WHERE status = 'NEW'
+                   AND timestamp between ... and ...
+                   AND rownum &lt; X  
+                NO WAIT 
+</pre><br>
+						<p><span class="ING">"FOR UPDATE"</span> No - C* - No client side locking</p>
+						<p><span class="ING">"WHERE"</span> Filtering on status and timestamps = tricky<br>e.g. could use <span class="ING">clustering columns</span></p>
+						<p>Table scan over partitions - C* = <span class="ING">slow(er)</span></p>
+						<p><span class="ING">Large partitions</span> can be <span class="ING">cumbersome</span></p>
+						<p class="fragment"><span class="ING">Not</span> looking good for C* :-(</p>
+					</section>
+
+					<section>
+						<h2><span class="ING">Sucker</span> for pain<br>let's try this in C* anyway</h2>	<br>
+						<p>Remember the goal is to <span class="ING">improve</span> availability<br><span class="ING">without trading</span> consistency</p>
+						<img width=40% src="./images/punch_in_face.jpg">
+					</section>
+
+					<section>
+						<em><span class="ING">how to solve this in C*</span></em><br><br>
+						<h2>View the problem <span class="ING">differently</span></h2>
+						<p><span class="ING">Application</span> should have more <span class="ING">responsibility</span></p>
+						<p><span class="ING">What if</span> we track the size of the 'file'</p><br>
+						<em><span class="ING">To use an analogy</span></em><br>
+						<table width=100%>
+							<tr>
+								<td width=20%>
+									<img width=100% src="./images/passengers.jpg">
+								</td>
+								<td width=60%  style="vertical-align:middle">
+									<div align="center">
+										<p>we will call out-going files - <span class="ING">trains</span></p>
+										<p>And single units of work - <span class="ING">passengers</span></p>
+									</div>
+								</td>
+								<td width=20%>
+									<img width=100% src="./images/train.jpg">
+								</td>
+							</tr>
+						</table>
+					</section>
+
+					<section>
+						<em><span class="ING">possible solutions</span></em><br><br>
+						<h2><span class="ING">NO LOCK</span> - locking is<br>overrated right?</h2>
+<pre>
+            SELECT TrainTotal FROM TrainTotal WHERE trainid = ?
+            BEGIN BATCH
+              INSERT INTO TrainPassenger (TrainId, PassengerId) VALUES (?,?);
+              UPDATE TrainTotal SET TrainTotal = ? WHERE TrainId = ?;
+            APPLY BATCH
+                
+            CREATE TABLE TrainTotal (           CREATE TABLE TrainPassenger (
+            TrainId       text,                 TrainId       text,  
+            TrainTotal    int,                  PassengerId   text,
+            PRIMARY KEY ( TrainId )             PRIMARY KEY ( TrainId,  PassengerId) 
+            );                                  );
+</pre>
+						<p><span class="ING">Assign</span> passenger to train</p>
+						<p>Keep <span class="ING">total</span> of trainsize in TrainTotal table</p>
+						<p><span class="ING">Requires</span> read before write</p>
+						<p>Read current size <span class="ING">before</span> writing new size</p>
+						<p>Is this <span class="ING">consistent</span>? In sequence this would be perfect</p>
+						<p><span class="ING">Expected results:</span> TrainTotal and TrainPassenger <span class="ING">out-of-sync</span></p>
+					</section>
+
+					<section>
+						<em><span class="ING">possible solutions</span></em><br><br>
+						<h2><span class="ING">COUNTERS</span> - cool C* feature</h2>
+<pre>
+            INSERT INTO TrainPassenger (TrainId, PassengerId) VALUES (?,?);
+            UPDATE Traincounter SET TrainTotal = TrainTotal + 1 WHERE TrainId = ?;
+
+            CREATE TABLE TrainCounter (         CREATE TABLE TrainPassenger (
+            TrainId       text,                 TrainId       text,  
+            TrainTotal    counter,              PassengerId   text,
+            PRIMARY KEY ( TrainId )             PRIMARY KEY ( TrainId,  PassengerId) 
+            );                                  );
+</pre><br>
+						<p><span class="ING">No</span> client-side read-before-write</p>
+						<p><span class="ING">Separate table</span> - not allowed in batches<br>with other statements</p><br>
+						<em><span class="ING">Is this consistent?</span></em><br>
+						<p><span class="ING">Document says</span> - Counters are made for this<br>but <span class="ING">overcounts</span> are possible</p>
+						<p><span class="ING">Expected results:</span> TrainCounter and TrainPassenger are in-sync</p>
+					</section>
+
+					<section>
+						<em><span class="ING">possible solutions</span></em><br><br>
+						<h2><span class="ING">PAXOS</span> - lightweight tranaction in C* (since v2)</h2>
+<pre>
+        SELECT TrainTotal FROM TrainTotal WHERE trainid = ?
+        UPDATE TrainTotal SET TrainTotal = ? WHERE trainid = ? IF TrainTotal= ?;
+        if [applied] == true  then INSERT INTO TrainPassenger (TrainId, PassengerId) 
+        VALUES (?,?);
+
+        CREATE TABLE TrainTotal (           CREATE TABLE TrainPassenger (
+        TrainId       text,                 TrainId       text,  
+        TrainTotal    int,                  PassengerId   text,
+        PRIMARY KEY ( TrainId )             PRIMARY KEY ( TrainId,  PassengerId) 
+        );                                  );
+</pre>
+						<p><span class="ING">Still</span> need a read-before-write</p>
+						<p>Even though the document says use for 1% of your application<br>- <span class="ING">use wisely</span> - costs are high</p>
+						<p><span class="ING">Lightweight</span> in features <span class="ING">BUT</span> not in 'execution'<p>
+						<p>We don't need <span class="ING">100.000</span> tps so this should be fine - <span class="ING">possible</span> solution!<p>
+						<p><span class="ING">Expected results:</span> Consistent but slower</p>
+					</section>
+
+					<section>
+						<em><span class="ING">possible solutions</span></em><br><br>
+						<h2><span class="ING">CARRIAGES</span> - lets break the problem into chunks</h2>
+<pre>
+            BEGIN BATCH
+              INSERT INTO TrainPassenger (TrainId, PassengerId) VALUES (?,?);
+              UPDATE TrainTotal SET TrainTotal = ? WHERE TrainId = ?;
+            APPLY BATCH
+
+            CREATE TABLE TrainTotal (           CREATE TABLE TrainPassenger (
+            TrainId       text,                 TrainId       text,  
+            TrainTotal    int,                  PassengerId   text,
+            PRIMARY KEY ( TrainId )             PRIMARY KEY ( TrainId,  PassengerId) 
+            );                                  );
+</pre><br>
+						<em><span class="ING">Trains and carriages</span></em><br>
+						<p><span class="ING">Each</span> application is responsible for their <span class="ING">own</span> carriage</p>
+						<p>Board Carriage <span class="ING">instead</span> of train</p>
+						<p><span class="ING">No</span> read-before-write - <span class="ING">application</span> knows it's carriage size</p> 
+						<p>All statements fit in a batch - <span class="ING">atomic</span></p>
+						<p><span class="ING">Expected results:</span> Consistent and fast but requires more logic</p>
+					</section>
+					<section>
+						<em><span class="ING">possible solutions</span></em><br><br>
+						<h2>So now we have <span class="ING">options</span> -<br>let's <span class="ING">test</span> them out</h2>
+						<p>No Lock</p>
+						<p>Counter</p>
+						<p>Paxos</p>
+						<p>Carriages</p>
+					</section>
+					<section>
+						<em><span class="ING">The setup</span></em><br><br>
+						<img width=200 height=80 src="./images/gatling.png" alt="Gatling - Results">	
+						<img width=200 height=80 src="./images/nodejs.jpg" alt="Gatling - Results">	
+						<p>Datastax Community C* v2.0.6</p>
+						<p>Gatling performance tester</p>
+						<p>4 users each doing 250 runs</p>
+						<p>Call each step in a sequence</p><br>
+						<p><a href="http://expressjs.com/" target="_blank"><span class="ING">ExpressJS</span></a></p>
+						<p><a href="https://github.com/jorgebay/node-cassandra-cql" target="_blank"><span class="ING">Node-Cassandra-cql</span></a></p>
+					</section>
+					<section>
+						<em><span class="ING">test</span></em><br><br>
+						<h2><span class="ING"></span>Test Results</h2>
+						<img width=100% src="./images/gatling_results.jpg" alt="Gatling - Results">	
+<pre>
+cqlsh:meetup> select * from traintotal;          cqlsh:meetup> select * from traincounter;
+ trainid       | traintotal                       trainid | traintotal
+---------------+------------                     ---------+------------
+ carriage_3001 |        400                       counter |       1000
+         paxos |        659
+ carriage_3000 |        600
+       no_lock |        930
+</pre>
+						<p>See anything interesting???</p>
+					</section>
+					<section>
+						<em><span class="ING">test</span></em><br><br>
+						<h2><span class="ING">Great,</span> so application fills up the carriage</h2>
+						<p><span class="ING">but what about the trains</span></p>
+						<img width=25% src="./images/train.jpg">
+						<p>Carriage capacity is <span class="ING">kept</span> in application<p>
+						<p>When carriage is <span class="ING">FULL</span> - Attach to train and create new one</p>
+						<p>Any action on train <span class="ING">requires</span> cluster wide locking to ensure <span class="ING">consistency</span>!</p>
+					</section>
+					<section>
+						<em><span class="ING">how does it work?</span></em><br><br>
+						<h2>Cluster Locks</h2>
+						<p>Basically needed to ensure <span class="ING">no-one</span> else is working on the object - train<p>
+						<p><span class="ING">Only</span> applications will fight for the lock - not threads</p>
+						<p>Use <span class="ING">TTL</span> to ensure locks are not kept endlessly</p>
+						<img width=25% src="./images/lock.jpg">
+					</section>
+					<section>
+						<em><span class="ING">how does it work?</span></em><br><br>
+						<h2>Aquire Cluster Lock</h2><br>
+<pre>
+lockid =  UuidGenerator.generate();
+
+INSERT INTO clusterlock (name, lockid) values  ( ?, ?) IF NOT EXISTS USING TTL ?;
+
+if (rows.get(0).getBool('[applied]') ) { 
+	return lockid.toString();
+} else  {
+	return NOK;
+}
+</pre>
+<br>
+<pre>
+CREATE TABLE ClusterLock (
+Name       text,
+LockId     text,
+Hostname   text,
+PRIMARY KEY ( Name )
+);
+</pre>
+					</section>
+					<section>
+						<em><span class="ING">how does it work?</span></em><br><br>
+						<h2>Refresh Cluster Lock</h2><br>
+			
+<pre>
+UPDATE clusterlock USING TTL ? SET lockid=? WHERE name= ? IF lockid=?;
+
+if (rows.get(0).getBool('[applied]') ) { 
+	return OK;
+} else  {
+	return NOK;
+} 
+ </pre>
+ <br>
+ <pre>
+CREATE TABLE ClusterLock (
+Name       text,
+LockId     text,
+Hostname   text,
+PRIMARY KEY ( Name )
+);
+</pre>
+					</section>
+
+					<section>
+						<em><span class="ING">how does it work?</span></em><br><br>
+						<h2>Release Cluster Lock</h2><br>
+<pre>
+DELETE FROM clusterlock WHERE name= ?  IF lockid=?;
+
+if (rows.get(0).getBool('[applied]') ) { 
+	return OK;
+} else  {
+	return NOK;
+} 
+</pre>
+<br>
+<pre>
+CREATE TABLE ClusterLock (
+Name       text,
+LockId     text,
+Hostname   text,
+PRIMARY KEY ( Name )
+);
+</pre>
+					</section>
+					<section>
+							<em><span class="ING">Other steps</span></em><br><br>
+							<p>Train departure - <span class="ING">requires</span> cluster lock</span></p>
+							<p>Depot - table of all unlinked carriages - <span class="ING">should be empty</span> helps with error situations</p>
+							<p>Scheduling - <span class="ING">based on</span> deadlines etc...</p>
+							<p>Maintenance - ensure that <span class="ING">all operations</span> are running smoothly - complete the feedback loop</p>
+							<img width=35% src="./images/trainstation.jpg">
+					</section>
+					<section>
+						<em><span class="ING">To Summarize</span></em><br><br>
+						<p><span class="ING">More responsibility</span> in the application results in more <span class="ING">scalable</span> solution</span></p>
+						<p><span class="ING">Reduced contention</span> in the cluster</p>
+						<img width=40% src="./images/responsibility.jpg">
+						<p><span class="ING">MUCH</span> more responsibility in application</p>
+						<p>Get it right - rewards are <span class="ING">great</span></p>
+						<p>Get it <span class="ING">wrong</span> - penalties can be <span class="ING">huge</span></p>
+					</section>
+					<section>
+						<h2><span class="ING">Is it worth it?</span></h2><br>
+						<p>Only <span class="ING">you</span> can decide</p>
+						<img width=25% src="./images/pointing-finger.jpg">
+						<p><span class="ING">Hailo</span> and <span class="ING">NetFlix</span> are deploying in new countries<br>within weeks <span class="ING">without</span> code change</p>
+				</section>
+					<section>
+						<h2><span class="ING">One final piece of advice:</span><br>test ALL features you are using</h2><br>
+						<p>Ensures that upgrades will be <span class="ING">easier and safer</span>!</p>
+						<p>Paxos + TTL combined did not work <span class="ING">after</span> a minor upgrade</p>
+						<p>We spotted this issue <span class="ING">within hours</span> after an upgrade of our cluster</p><br>
+						<a href="https://issues.apache.org/jira/browse/CASSANDRA-6801" target="_blank"><span class="ING">Jira Cassandra 6801</span></a>
+						<p>Datastax <span class="ING">solved</span> it within a week</p>
+						<img width=60% src="./images/jenkins.jpg" alt="Gatling - Results">	
+					</section>
+			</section> 	
+				
+				<section>
+					<p>Thank you</p>
+					<em>...graceful bow</em>
+					<br><br><br>
+					Contact<br>	
+					<a href="mailto:gary.stewart@ing.nl"><span class="ING">gary.stewart@ing.nl</span></a><br>
+					<a href="mailto:christopher.reedijk@ing.nl"><span class="ING">christopher.reedijk@ing.nl</span></a><br><br>
+					<em>We're hiring!</em><br>
+					<img src="./images/ing-logo.gif" alt="ING">
+					<br><br><br><br><small>this presentation is created using: <a href="https://github.com/hakimel/reveal.js/" target="_blank"><br><span class="ING">reveal.js</span></a></small>
+				</section>
+				<section>
+					<h2>Who's willing to <span class="ING">contribute</span> to the <span class="ING">next</span> meetup(s)?</h2>
+					<img width=50% src="./images/meetup.png" alt="meetup">
+				</section>
+			</div>					
+		</div>
+		<script src="lib/js/head.min.js"></script>
+          <script src="js/reveal.min.js"></script>
+		<script>
+				// Full list of configuration options available here:
+				// https://github.com/hakimel/reveal.js#configuration
+				Reveal.initialize({
+						controls: true,
+						progress: true,
+						history: true,
+						center: true,
+
+						theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+						transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+						// Parallax scrolling
+						// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+						// parallaxBackgroundSize: '2100px 900px',
+
+						// Optional libraries used to extend on reveal.js
+						dependencies: [
+								{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+								{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+								{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+								{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+								{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+								{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+						]
+				});
+		</script>
+	</body>
+</html>
