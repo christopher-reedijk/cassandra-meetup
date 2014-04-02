@@ -150,7 +150,7 @@
                    AND rownum &lt; X  
                 NO WAIT 
 </pre>
-						<p><span class="ING">DONE</span> - thank you for your time...</p>
+						<p><span class="ING">DONE</span> - thank you for your time...</p><br>
 						<p class="fragment">Hang on - what about <span class="ING">scalability</span>, <span class="ING">resilience</span> and <span class="ING">availability</span>?</p>
 						<p class="fragment">Will <span class="ING">infra</span> solve that? <span class="ING">Too easy</span> :-)</p>
 					</section>
@@ -168,7 +168,7 @@
 						<p><span class="ING">"FOR UPDATE"</span> No - C* - No client side locking</p>
 						<p><span class="ING">"WHERE"</span> Filtering on status and timestamps = tricky<br>e.g. could use <span class="ING">clustering columns</span></p>
 						<p>Table scan over partitions - C* = <span class="ING">slow(er)</span></p>
-						<p><span class="ING">Large partitions</span> can be <span class="ING">cumbersome</span></p>
+						<p><span class="ING">Large partitions</span> can be <span class="ING">cumbersome</span></p><br>
 						<p class="fragment"><span class="ING">Not</span> looking good for C* :-(</p>
 					</section>
 					<section>
