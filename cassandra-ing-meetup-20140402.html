@@ -115,6 +115,7 @@
 						<em><span class="ING">and now for tonight?</span></em><br><br>
 						<h2 >Lets talk about <span class="ING">consistency</span></h2>
 						<h2 >as it is supposed to be <span class="ING">harder!</span></h2>
+						<img width=40% src="./images/lego.png">
 					</section>
 					<section>
 						<em><span class="ING">a generic problem</span></em><br><br>
@@ -201,7 +202,7 @@
 					<section>
 						<em><span class="ING">proposed solutions</span></em><br><br>
 						<p>No Lock</p>
-						<p>Counter</p>
+						<p>Counters</p>
 						<p>Paxos</p>
 						<p>Carriages</p>
 					</section>
@@ -306,7 +307,7 @@
 							<tr>
 								<td width=15%>&nbsp;</td>
 								<td style="vertical-align:middle">
-									<p>Counter</p>
+									<p>Counters</p>
 								</td>
 								<td style="vertical-align:middle">
 									<small><span class="ING">Expected results:</span> TrainCounter and TrainPassenger are in-sync</small>
@@ -353,13 +354,18 @@
 						<h2><span class="ING"></span>Test Results</h2>
 						<img width=100% src="./images/gatling_results.jpg" alt="Gatling - Results">	
 <pre>
-cqlsh:meetup> select * from traintotal;          cqlsh:meetup> select * from traincounter;
+cqlsh:meetup> select * from traintotal;          cqlsh:meetup> select * from traintotal;
  trainid       | traintotal                       trainid | traintotal
 ---------------+------------                     ---------+------------
- carriage_3001 |        400                       counter |       1000
-         paxos |        659
- carriage_3000 |        600
+         paxos |        753                       counter |       1000
        no_lock |        930
+
+
+cqlsh:meetup> select * from carriagetotal;
+ carriageid    | carriagetotal 
+---------------+--------------
+ carriage_3001 |          400 
+ carriage_3000 |          600
 </pre>
 					</section>
 					<section>
