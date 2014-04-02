@@ -150,11 +150,10 @@
                    AND rownum &lt; X  
                 NO WAIT 
 </pre>
-					<p><span class="ING">DONE</span> - thank you for your time...</p>
-					<p class="fragment">Hang on - what about <span class="ING">scalability</span>, <span class="ING">resilience</span> and <span class="ING">availability</span>?</p>
-					<p class="fragment">Will <span class="ING">infra</span> solve that? <span class="ING">Too easy</span> :-)</p>
+						<p><span class="ING">DONE</span> - thank you for your time...</p>
+						<p class="fragment">Hang on - what about <span class="ING">scalability</span>, <span class="ING">resilience</span> and <span class="ING">availability</span>?</p>
+						<p class="fragment">Will <span class="ING">infra</span> solve that? <span class="ING">Too easy</span> :-)</p>
 					</section>
-
 					<section>
 						<em><span class="ING">So could this be solved in C*?</span></em><br><br>
 <pre>
@@ -172,13 +171,11 @@
 						<p><span class="ING">Large partitions</span> can be <span class="ING">cumbersome</span></p>
 						<p class="fragment"><span class="ING">Not</span> looking good for C* :-(</p>
 					</section>
-
 					<section>
 						<h2><span class="ING">Sucker</span> for pain<br>let's try this in C* anyway</h2>	<br>
 						<p>Remember the goal is to <span class="ING">improve</span> availability<br><span class="ING">without trading</span> consistency</p>
 						<img width=40% src="./images/punch_in_face.jpg">
 					</section>
-
 					<section>
 						<em><span class="ING">how to solve this in C*</span></em><br><br>
 						<h2>View the problem <span class="ING">differently</span></h2>
@@ -202,7 +199,6 @@
 							</tr>
 						</table>
 					</section>
-
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
 						<h2><span class="ING">NO LOCK</span> - locking is<br>overrated right?</h2>
@@ -226,7 +222,6 @@
 						<p>Is this <span class="ING">consistent</span>? In sequence this would be perfect</p>
 						<p><span class="ING">Expected results:</span> TrainTotal and TrainPassenger <span class="ING">out-of-sync</span></p>
 					</section>
-
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
 						<h2><span class="ING">COUNTERS</span> - cool C* feature</h2>
@@ -246,7 +241,6 @@
 						<p><span class="ING">Document says</span> - Counters are made for this<br>but <span class="ING">overcounts</span> are possible</p>
 						<p><span class="ING">Expected results:</span> TrainCounter and TrainPassenger are in-sync</p>
 					</section>
-
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
 						<h2><span class="ING">PAXOS</span> - lightweight tranaction in C* (since v2)</h2>
@@ -268,7 +262,6 @@
 						<p>We don't need <span class="ING">100.000</span> tps so this should be fine - <span class="ING">possible</span> solution!<p>
 						<p><span class="ING">Expected results:</span> Consistent but slower</p>
 					</section>
-
 					<section>
 						<em><span class="ING">possible solutions</span></em><br><br>
 						<h2><span class="ING">CARRIAGES</span> - lets break the problem into chunks</h2>
@@ -389,7 +382,6 @@ PRIMARY KEY ( Name )
 );
 </pre>
 					</section>
-
 					<section>
 						<em><span class="ING">how does it work?</span></em><br><br>
 						<h2>Release Cluster Lock</h2><br>
@@ -414,7 +406,7 @@ PRIMARY KEY ( Name )
 					</section>
 					<section>
 							<em><span class="ING">Other steps</span></em><br><br>
-							<p>Train departure - <span class="ING">requires</span> cluster lock</span></p>
+							<p>Train departure - <span class="ING">requires</span> cluster lock</p>
 							<p>Depot - table of all unlinked carriages - <span class="ING">should be empty</span> helps with error situations</p>
 							<p>Scheduling - <span class="ING">based on</span> deadlines etc...</p>
 							<p>Maintenance - ensure that <span class="ING">all operations</span> are running smoothly - complete the feedback loop</p>
@@ -422,7 +414,7 @@ PRIMARY KEY ( Name )
 					</section>
 					<section>
 						<em><span class="ING">To Summarize</span></em><br><br>
-						<p><span class="ING">More responsibility</span> in the application results in more <span class="ING">scalable</span> solution</span></p>
+						<p><span class="ING">More responsibility</span> in the application results in more <span class="ING">scalable</span> solution</p>
 						<p><span class="ING">Reduced contention</span> in the cluster</p>
 						<img width=40% src="./images/responsibility.jpg">
 						<p><span class="ING">MUCH</span> more responsibility in application</p>
@@ -434,7 +426,7 @@ PRIMARY KEY ( Name )
 						<p>Only <span class="ING">you</span> can decide</p>
 						<img width=25% src="./images/pointing-finger.jpg">
 						<p><span class="ING">Hailo</span> and <span class="ING">NetFlix</span> are deploying in new countries<br>within weeks <span class="ING">without</span> code change</p>
-				</section>
+					</section>
 					<section>
 						<h2><span class="ING">One final piece of advice:</span><br>test ALL features you are using</h2><br>
 						<p>Ensures that upgrades will be <span class="ING">easier and safer</span>!</p>
@@ -444,7 +436,7 @@ PRIMARY KEY ( Name )
 						<p>Datastax <span class="ING">solved</span> it within a week</p>
 						<img width=60% src="./images/jenkins.jpg" alt="Gatling - Results">	
 					</section>
-			</section> 	
+				</section> 	
 				
 				<section>
 					<p>Thank you</p>
