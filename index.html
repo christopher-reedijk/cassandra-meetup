@@ -22,7 +22,13 @@
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
-			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
 		</script>
 		<script src="./js/countdown/countdown.js" type="text/javascript"></script>
 
@@ -51,7 +57,7 @@
 					<img width=37.5% src="./images/ing-logo.jpg" alt="ING"/>
 					<img width=40% src="./images/datastax.jpg" alt="Datastax"/>
 					<br><br><br>
-					<p><span class="ING">ING C* meetups</span></p><br>
+					<em><span class="ING">ING C* meetups</span></em><br><br>
 					<table>
 						<tr>
 							<td width=20%><p><span class="ING">26-02-2014:</span></p></td>
@@ -66,6 +72,20 @@
 							<td width=20%><p><span class="ING"></span></p></td>
 							<td><small>Gary Stewart, Christopher Reedijk</small></td>
 							<td><small><span class="WHITE"><a href="./cassandra-ing-meetup-20140226.html" target="_blank">presentation</a></span></small></td>
+						</tr>
+						<tr>
+							<td width=20%><p><span class="ING">02-04-2014:</span></p></td>
+							<td colspan="2"><p>Apache Cassandra at ING + Time Series</p></td>
+						</tr>
+						<tr>
+							<td width=20%><p><span class="ING"></span></p></td>
+							<td><small>Patrick McFadin</small></td>
+							<td><small><span class="WHITE"><a href="http://www.slideshare.net/patrickmcfadin/time-series-with-apache-cassandra-strata" target="_blank">presentation</a></span></p></small>
+						</tr>
+						<tr>
+							<td width=20%><p><span class="ING"></span></p></td>
+							<td><small>Gary Stewart</small></td>
+							<td><small><span class="WHITE"><a href="./cassandra-ing-meetup-20140402.html" target="_blank">presentation</a></span></small></td>
 						</tr>
 					</table>
 				</section>
